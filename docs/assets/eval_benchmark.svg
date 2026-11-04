@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" width="100%" height="100%">
+  <rect width="920" height="300" rx="12" fill="#0f172a"/>
+  <text x="460" y="36" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">
+    RAG Eval Harness Benchmark Results on YouTube Channel RAG (7/7 Queries Passed)
+  </text>
+
+  <!-- Metric Bars -->
+  <!-- Recall@5 -->
+  <text x="40" y="85" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Recall@5</text>
+  <rect x="240" y="68" width="560" height="24" rx="6" fill="#1e293b"/>
+  <rect x="240" y="68" width="560" height="24" rx="6" fill="#10b981"/>
+  <text x="815" y="85" fill="#10b981" font-family="system-ui, sans-serif" font-size="13" font-weight="700">100.0%</text>
+
+  <!-- MRR -->
+  <text x="40" y="125" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Mean Reciprocal Rank (MRR)</text>
+  <rect x="240" y="108" width="560" height="24" rx="6" fill="#1e293b"/>
+  <rect x="240" y="108" width="560" height="24" rx="6" fill="#06b6d4"/>
+  <text x="815" y="125" fill="#06b6d4" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1.000</text>
+
+  <!-- NDCG@5 -->
+  <text x="40" y="165" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">NDCG@5</text>
+  <rect x="240" y="148" width="560" height="24" rx="6" fill="#1e293b"/>
+  <rect x="240" y="148" width="560" height="24" rx="6" fill="#3b82f6"/>
+  <text x="815" y="165" fill="#3b82f6" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1.000</text>
+
+  <!-- Cross-Checked Faithfulness -->
+  <text x="40" y="205" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Cross-Checked Faithfulness</text>
+  <rect x="240" y="188" width="560" height="24" rx="6" fill="#1e293b"/>
+  <rect x="240" y="188" width="548.8" height="24" rx="6" fill="#8b5cf6"/>
+  <text x="815" y="205" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="13" font-weight="700">98.0%</text>
+
+  <!-- Answer Completeness -->
+  <text x="40" y="245" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Answer Completeness</text>
+  <rect x="240" y="228" width="560" height="24" rx="6" fill="#1e293b"/>
+  <rect x="240" y="228" width="539.8" height="24" rx="6" fill="#f59e0b"/>
+  <text x="815" y="245" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="13" font-weight="700">96.4%</text>
+</svg>

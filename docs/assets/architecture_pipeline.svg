@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="cardBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="cardTeal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#134e4a"/>
+    </linearGradient>
+    <linearGradient id="cardPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5b21b6"/>
+      <stop offset="100%" stop-color="#3b0764"/>
+    </linearGradient>
+    <linearGradient id="cardAmber" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <rect width="1080" height="420" rx="14" fill="url(#bgGrad)"/>
+
+  <text x="540" y="38" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700">
+    YouTube Channel RAG + Dual-Engine Evaluation Architecture
+  </text>
+  <text x="540" y="60" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="13">
+    Any YouTube Channel (@freecodecamp, @AndrejKarpathy, @fireship) &#8594; Multi-Tier Transcript Ingestion &#8594; ChromaDB &#8594; Hybrid Reranking &#8594; RAG Eval Harness
+  </text>
+
+  <!-- Stage 1: Discovery & Ingestion -->
+  <rect x="30" y="85" width="225" height="295" rx="10" fill="url(#cardBlue)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="142" y="112" text-anchor="middle" fill="#60a5fa" font-family="system-ui, sans-serif" font-size="14" font-weight="700">1. CHANNEL INGESTION</text>
+  <rect x="46" y="128" width="193" height="58" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="142" y="148" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">URL &amp; Handle Normalizer</text>
+  <text x="142" y="166" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">@freecodecamp &#8594; /videos tab</text>
+
+  <rect x="46" y="198" width="193" height="72" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="142" y="218" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">yt-dlp Discovery + Search</text>
+  <text x="142" y="236" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">extract_flat="in_playlist"</text>
+  <text x="142" y="252" text-anchor="middle" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10">+ /@channel/search?query=...</text>
+
+  <rect x="46" y="282" width="193" height="80" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="142" y="302" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">3-Tier Transcript Extractor</text>
+  <text x="142" y="320" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">1. youtube-transcript-api (en*)</text>
+  <text x="142" y="336" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">2. Auto-caption track fallback</text>
+  <text x="142" y="352" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">3. yt-dlp JSON3 + Chapters</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="255" y1="232" x2="290" y2="232" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2: Chunking & Vector DB -->
+  <rect x="295" y="85" width="230" height="295" rx="10" fill="url(#cardTeal)" stroke="#14b8a6" stroke-width="1.5"/>
+  <text x="410" y="112" text-anchor="middle" fill="#5eead4" font-family="system-ui, sans-serif" font-size="14" font-weight="700">2. CHUNKING &amp; CHROMADB</text>
+  <rect x="311" y="128" width="198" height="68" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="410" y="148" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">500-Word Sliding Window</text>
+  <text x="410" y="166" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">50-word overlap (stride 450)</text>
+  <text x="410" y="182" text-anchor="middle" fill="#5eead4" font-family="system-ui, sans-serif" font-size="10">+ &lt;&lt;&lt;Channel | Video Title&gt;&gt;&gt;</text>
+
+  <rect x="311" y="208" width="198" height="72" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="410" y="228" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Dual-Mode Embedder</text>
+  <text x="410" y="246" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">OpenAI text-embedding-3-small</text>
+  <text x="410" y="264" text-anchor="middle" fill="#5eead4" font-family="system-ui, sans-serif" font-size="10">Fallback: 384-d Stemmed N-Gram</text>
+
+  <rect x="311" y="292" width="198" height="70" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="410" y="314" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">ChromaDB PersistentClient</text>
+  <text x="410" y="332" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Idempotent .upsert() on disk</text>
+  <text x="410" y="348" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Metadata: video_id, title, url</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="525" y1="232" x2="560" y2="232" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3: Hybrid Retrieval & Synthesis -->
+  <rect x="565" y="85" width="230" height="295" rx="10" fill="url(#cardPurple)" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="680" y="112" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="14" font-weight="700">3. HYBRID RETRIEVAL &amp; GEN</text>
+  <rect x="581" y="128" width="198" height="72" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="680" y="148" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Hybrid Lexical Reranker</text>
+  <text x="680" y="166" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Dense Distance + Stemmed Terms</text>
+  <text x="680" y="184" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10">+ Noise Coverage Thresholding</text>
+
+  <rect x="581" y="212" width="198" height="68" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="680" y="232" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">On-Demand Channel Search</text>
+  <text x="680" y="250" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">If coverage &lt; 65%, auto-searches</text>
+  <text x="680" y="266" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">channel &amp; indexes older videos</text>
+
+  <rect x="581" y="292" width="198" height="70" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="680" y="314" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Grounded Synthesis</text>
+  <text x="680" y="332" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">OpenAI gpt-4o-mini (Primary)</text>
+  <text x="680" y="348" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10">Fallback: Extractive Synthesizer</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="795" y1="232" x2="830" y2="232" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 4: RAG Eval Harness -->
+  <rect x="835" y="85" width="215" height="295" rx="10" fill="url(#cardAmber)" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="942" y="112" text-anchor="middle" fill="#fde68a" font-family="system-ui, sans-serif" font-size="14" font-weight="700">4. RAG EVAL HARNESS</text>
+  <rect x="851" y="128" width="183" height="68" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="942" y="148" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">IR Metrics Engine</text>
+  <text x="942" y="166" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Recall@5: 100% | MRR: 1.00</text>
+  <text x="942" y="182" text-anchor="middle" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10">NDCG@5: 1.00 | Coverage: 100%</text>
+
+  <rect x="851" y="208" width="183" height="72" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="942" y="228" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Dual-Judge Faithfulness</text>
+  <text x="942" y="246" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">LLM-as-a-Judge (97.1%)</text>
+  <text x="942" y="264" text-anchor="middle" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10">&#215; NLI Entailment (98.0%)</text>
+
+  <rect x="851" y="292" width="183" height="70" rx="6" fill="#0f172a" stroke="#334155"/>
+  <text x="942" y="314" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Failure Taxonomy</text>
+  <text x="942" y="332" text-anchor="middle" fill="#4ade80" font-family="system-ui, sans-serif" font-size="11" font-weight="700">Pass Rate: 100% (7/7)</text>
+  <text x="942" y="348" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Live Audit in Streamlit UI</text>
+</svg>

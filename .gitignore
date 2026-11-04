@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.chroma_db/
+.rag_harness_cache/
+.venv/
+venv/
+.DS_Store
+.env

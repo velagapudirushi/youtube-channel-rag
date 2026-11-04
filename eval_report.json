@@ -1,0 +1,1967 @@
+{
+  "pipeline_name": "youtube-channel-rag",
+  "dataset_name": "youtube-channel-rag-benchmark-v1",
+  "timestamp": "2026-11-04T04:59:36Z",
+  "k": 5,
+  "total_queries": 7,
+  "passed_queries": 0,
+  "pass_rate": 0.0,
+  "mean_recall_at_k": 0.0,
+  "mean_precision_at_k": 0.0,
+  "mean_mrr": 0.0,
+  "mean_ndcg_at_k": 0.0,
+  "mean_hit_rate": 0.0,
+  "mean_context_coverage": 1.0,
+  "mean_llm_faithfulness": 0.5774,
+  "mean_nli_faithfulness": 0.5408,
+  "mean_cross_checked_faithfulness": 0.5278,
+  "mean_answer_completeness": 0.9643,
+  "total_claims_evaluated": 69,
+  "total_judge_disagreements": 1,
+  "disagreement_rate": 0.0145,
+  "mean_latency_ms": 2.89,
+  "failure_distribution": {
+    "RETRIEVAL_MISS": 6,
+    "INTRINSIC_CONTRADICTION": 1
+  },
+  "representative_failures": [
+    {
+      "category": "RETRIEVAL_MISS",
+      "title": "Retrieval Miss (Golden Evidence Absent from Top-K Chunks)",
+      "count": 6,
+      "percentage": 85.7,
+      "description": "The retriever failed to surface the ground-truth document chunk in the top-K results, starving the generator of required facts.",
+      "remediation": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "examples": [
+        {
+          "query_id": "fcc_01_python_list_tuple",
+          "question": "What does this channel teach about Python lists vs tuples and mutability?",
+          "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- The key difference between a Python list and a tuple is mutability: once a tuple is created, its elements cannot be changed, added, or removed. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- In this course you will learn everything you need to get started with Python 3, from installing Python and PyCharm to variables, data types, strings, numbers, lists, tuples, functions, return statements, if statements, loops, dictionaries, try/except error handling, reading and writing external files, modules and pip, and object-oriented programming with classes, objects, and inheritance. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Tuples in Python are immutable ordered sequences created with parentheses like my_tuple = (1, 2, 3). — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Because tuples are immutable, they are faster and more memory-efficient than lists, can be used as dictionary keys, and protect constant data such as coordinates from accidental modification. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Lists in Python are mutable ordered sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*",
+          "ground_truth_answer": "Lists in Python are mutable ordered sequences created with square brackets where elements can be modified, appended, or removed, whereas tuples are immutable ordered sequences created with parentheses whose elements cannot be changed once created, making tuples faster and usable as dictionary keys.",
+          "retrieved_chunk_ids": [
+            "chunk_1",
+            "chunk_2"
+          ],
+          "golden_chunk_ids": [
+            "rfscVS0vtbw_chunk_0",
+            "rfscVS0vtbw_chunk_1"
+          ],
+          "first_relevant_rank": null,
+          "llm_judge_score": 0.4455,
+          "nli_entailment_score": 0.5012,
+          "cross_checked_score": 0.4361,
+          "flagged_claims": [
+            {
+              "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=33%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.16,
+                "neutral": 0.79,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.032
+            },
+            {
+              "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.2133,
+                "neutral": 0.6667,
+                "contradiction": 0.12
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0427
+            },
+            {
+              "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.2133,
+                "neutral": 0.6667,
+                "contradiction": 0.12
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0427
+            },
+            {
+              "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.2133,
+                "neutral": 0.6667,
+                "contradiction": 0.12
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0427
+            },
+            {
+              "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.2133,
+                "neutral": 0.6667,
+                "contradiction": 0.12
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0427
+            },
+            {
+              "claim_text": "Lists in Python are mutable ordered sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.9,
+              "llm_reasoning": "Claim uses opposite polarity ('mutable' vs 'immutable') relative to evidence in chunk 'chunk_1'. [NLI Cross-Check: Entailed by chunk_1 (lexical-structural overlap=1.00).]",
+              "nli_label": "ENTAILMENT",
+              "nli_probabilities": {
+                "entailment": 0.98,
+                "neutral": 0.01,
+                "contradiction": 0.01
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": false,
+              "disagreement_type": "LLM_FALSE_NEGATIVE",
+              "calibrated_score": 0.588
+            },
+            {
+              "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.2133,
+                "neutral": 0.6667,
+                "contradiction": 0.12
+              },
+              "best_chunk_id": "chunk_2",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0427
+            }
+          ],
+          "failure_explanation": "Retriever missed golden chunk(s) ['rfscVS0vtbw_chunk_0', 'rfscVS0vtbw_chunk_1'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.44).",
+          "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms."
+        },
+        {
+          "query_id": "fcc_02_javascript_es6",
+          "question": "How are variables declared in modern ES6 JavaScript and what asynchronous features are covered?",
+          "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- In modern ES6 JavaScript, we declare variables using let for block-scoped mutable variables and const for constants, preferring them over var which is function-scoped and hoisted. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- This complete 134-part JavaScript tutorial from freeCodeCamp walks through everything from basic syntax to ES6 features. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- JavaScript is the scripting language of the web that runs directly in the browser and on the server via Node.js. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- We cover arrow functions, destructuring assignments, template literals, spread and rest operators, promises, async/await for asynchronous API calls, and DOM manipulation to build interactive frontend web applications. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*",
+          "ground_truth_answer": "In modern ES6 JavaScript, variables are declared using let for block-scoped mutable variables and const for constants instead of var, and asynchronous API calls use promises and async/await.",
+          "retrieved_chunk_ids": [
+            "chunk_1"
+          ],
+          "golden_chunk_ids": [
+            "PkZNo7MFNFg_chunk_0"
+          ],
+          "first_relevant_rank": null,
+          "llm_judge_score": 0.5278,
+          "nli_entailment_score": 0.4578,
+          "cross_checked_score": 0.4493,
+          "flagged_claims": [
+            {
+              "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.16,
+                "neutral": 0.79,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.032
+            },
+            {
+              "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            },
+            {
+              "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            },
+            {
+              "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            },
+            {
+              "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            }
+          ],
+          "failure_explanation": "Retriever missed golden chunk(s) ['PkZNo7MFNFg_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.45).",
+          "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms."
+        },
+        {
+          "query_id": "karpathy_03_bpe_tokenizer",
+          "question": "How does Byte Pair Encoding (BPE) tokenization work in GPT models?",
+          "generated_answer": "### Grounded Answer from **Andrej Karpathy**\n\n- Today we are going to build the GPT Tokenizer from scratch using Byte Pair Encoding (BPE). — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- In Byte Pair Encoding, we start with raw bytes (256 tokens) and iteratively merge the most frequent adjacent pair of tokens into a new vocabulary token until we reach our target vocabulary size, such as 50,257 for GPT-2 or 100,277 for GPT-4 cl100k_base. — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- Tokenization is the translation layer between raw UTF-8 strings and the discrete integer token IDs that Transformers actually see. — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- Many quirky LLM failure modes—like struggling to spell words backward, counting letters in 'strawberry', doing arithmetic, or handling non-English languages and YAML whitespace—actually trace right back to tokenization! — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*",
+          "ground_truth_answer": "Byte Pair Encoding starts with 256 raw byte tokens and iteratively merges the most frequent adjacent pair of tokens into new vocabulary tokens until reaching target vocabulary size such as 50,257 for GPT-2 or 100,277 for GPT-4.",
+          "retrieved_chunk_ids": [
+            "chunk_1"
+          ],
+          "golden_chunk_ids": [
+            "zduSFxRajkE_chunk_0"
+          ],
+          "first_relevant_rank": null,
+          "llm_judge_score": 0.5278,
+          "nli_entailment_score": 0.4789,
+          "cross_checked_score": 0.4578,
+          "flagged_claims": [
+            {
+              "claim_text": "### Grounded Answer from **Andrej Karpathy**.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=0%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            },
+            {
+              "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.18,
+                "neutral": 0.77,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.036
+            },
+            {
+              "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.18,
+                "neutral": 0.77,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.036
+            },
+            {
+              "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.18,
+                "neutral": 0.77,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.036
+            },
+            {
+              "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.18,
+                "neutral": 0.77,
+                "contradiction": 0.05
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.036
+            }
+          ],
+          "failure_explanation": "Retriever missed golden chunk(s) ['zduSFxRajkE_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.46).",
+          "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms."
+        }
+      ]
+    },
+    {
+      "category": "INTRINSIC_CONTRADICTION",
+      "title": "Intrinsic Contradiction (Misread Numbers, Negations, or Tiers)",
+      "count": 1,
+      "percentage": 14.3,
+      "description": "The retriever fetched the relevant passage, but the generator misread a numeric figure, inverted a negation polarity, or confused policy rules across adjacent tiers.",
+      "remediation": "Keep structured tables/policies intact during chunking (semantic/markdown-header chunking) and instruct the generator to verify entity scope before stating numbers.",
+      "examples": [
+        {
+          "query_id": "karpathy_01_self_attention",
+          "question": "How does self-attention work in a Transformer using Query, Key, and Value vectors?",
+          "generated_answer": "### Grounded Answer from **Andrej Karpathy**\n\n- Self-attention is a communication mechanism where every token emits three vectors: a Query vector, a Key vector, and a Value vector. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- At the heart of the Transformer architecture is the self-attention mechanism. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- We take the dot product between the Queries and the Keys, divide by the square root of the head dimension d_k for scaled dot-product attention, apply a causal mask so future tokens cannot communicate with past tokens in autoregressive decoding, and then softmax to get attention weights. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- Finally, we aggregate the Value vectors using those attention weights. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- Multi-head attention simply runs multiple self-attention heads in parallel and concatenates their outputs, allowing the Transformer to attend to information from different representation subspaces at different positions. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*",
+          "ground_truth_answer": "Every token emits Query, Key, and Value vectors. We compute scaled dot-product attention between Queries and Keys, apply a causal mask and softmax to get attention weights, and aggregate the Value vectors.",
+          "retrieved_chunk_ids": [
+            "chunk_1",
+            "chunk_2"
+          ],
+          "golden_chunk_ids": [
+            "kCc8FmEb1nY_chunk_0",
+            "kCc8FmEb1nY_chunk_1"
+          ],
+          "first_relevant_rank": null,
+          "llm_judge_score": 0.4682,
+          "nli_entailment_score": 0.4482,
+          "cross_checked_score": 0.4515,
+          "flagged_claims": [
+            {
+              "claim_text": "### Grounded Answer from **Andrej Karpathy**.",
+              "llm_verdict": "UNVERIFIABLE",
+              "llm_confidence": 0.86,
+              "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=0%) do not contain sufficient evidence to verify this claim.",
+              "nli_label": "NEUTRAL",
+              "nli_probabilities": {
+                "entailment": 0.06,
+                "neutral": 0.88,
+                "contradiction": 0.06
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.012
+            },
+            {
+              "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.88,
+              "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+              "nli_label": "CONTRADICTION",
+              "nli_probabilities": {
+                "entailment": 0.03,
+                "neutral": 0.06,
+                "contradiction": 0.91
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0
+            },
+            {
+              "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.88,
+              "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+              "nli_label": "CONTRADICTION",
+              "nli_probabilities": {
+                "entailment": 0.03,
+                "neutral": 0.06,
+                "contradiction": 0.91
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0
+            },
+            {
+              "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.88,
+              "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+              "nli_label": "CONTRADICTION",
+              "nli_probabilities": {
+                "entailment": 0.03,
+                "neutral": 0.06,
+                "contradiction": 0.91
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0
+            },
+            {
+              "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.88,
+              "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+              "nli_label": "CONTRADICTION",
+              "nli_probabilities": {
+                "entailment": 0.03,
+                "neutral": 0.06,
+                "contradiction": 0.91
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0
+            },
+            {
+              "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+              "llm_verdict": "CONTRADICTED",
+              "llm_confidence": 0.88,
+              "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+              "nli_label": "CONTRADICTION",
+              "nli_probabilities": {
+                "entailment": 0.03,
+                "neutral": 0.06,
+                "contradiction": 0.91
+              },
+              "best_chunk_id": "chunk_1",
+              "agreement": true,
+              "disagreement_type": null,
+              "calibrated_score": 0.0
+            }
+          ],
+          "failure_explanation": "Generated answer contradicts retrieved evidence (5 contradicted claim(s)): \"— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.\"",
+          "remediation_hint": "Keep structured tables/policies intact during chunking (semantic/markdown-header chunking) and instruct the generator to verify entity scope before stating numbers."
+        }
+      ]
+    }
+  ],
+  "query_results": [
+    {
+      "query_id": "fcc_01_python_list_tuple",
+      "question": "What does this channel teach about Python lists vs tuples and mutability?",
+      "category": "freeCodeCamp - Python",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- The key difference between a Python list and a tuple is mutability: once a tuple is created, its elements cannot be changed, added, or removed. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- In this course you will learn everything you need to get started with Python 3, from installing Python and PyCharm to variables, data types, strings, numbers, lists, tuples, functions, return statements, if statements, loops, dictionaries, try/except error handling, reading and writing external files, modules and pip, and object-oriented programming with classes, objects, and inheritance. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Tuples in Python are immutable ordered sequences created with parentheses like my_tuple = (1, 2, 3). — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Because tuples are immutable, they are faster and more memory-efficient than lists, can be used as dictionary keys, and protect constant data such as coordinates from accidental modification. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*\n- Lists in Python are mutable ordered sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place. — *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*",
+      "ground_truth_answer": "Lists in Python are mutable ordered sequences created with square brackets where elements can be modified, appended, or removed, whereas tuples are immutable ordered sequences created with parentheses whose elements cannot be changed once created, making tuples faster and usable as dictionary keys.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place. Tuples in Python are immutable ordered sequences created with parentheses like my_tuple = (1, 2, 3). The key difference between a Python list and a tuple is mutability: once a tuple is created, its elements cannot be changed, added, or removed. Because tuples are immutable, they are faster and more memory-efficient than lists, can be used as dictionary keys, and protect constant data such as coordinates from accidental modification. Functions allow you to organize reusable blocks of code using the def keyword, accept parameters, and return results.",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        },
+        {
+          "chunk_id": "chunk_2",
+          "text": "Welcome to the freeCodeCamp complete Python programming course for beginners. In this course you will learn everything you need to get started with Python 3, from installing Python and PyCharm to variables, data types, strings, numbers, lists, tuples, functions, return statements, if statements, loops, dictionaries, try/except error handling, reading and writing external files, modules and pip, and object-oriented programming with classes, objects, and inheritance. Python is one of the most popular programming languages for web development, data science, machine learning, artificial intelligence, and automation. Lists in Python are mutable ordered sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place. Tuples in Python are immutable ordered sequences created with parentheses like my_tuple = (1, 2, 3). The key difference between a Python list and",
+          "score": 0.0,
+          "rank": 2,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "rfscVS0vtbw_chunk_0",
+        "rfscVS0vtbw_chunk_1"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.4455,
+        "nli_entailment_score": 0.5012,
+        "cross_checked_score": 0.4361,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.16,
+              "neutral": 0.79,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.032
+          },
+          {
+            "claim_text": "The key difference between a Python list and a tuple is mutability: once a tuple is created, its elements cannot be changed, added, or removed.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2133,
+              "neutral": 0.6667,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0427
+          },
+          {
+            "claim_text": "In this course you will learn everything you need to get started with Python 3, from installing Python and PyCharm to variables, data types, strings, numbers, lists, tuples, functions, return statements, if statements, loops, dictionaries, try/except error handling, reading and writing external files, modules and pip, and object-oriented programming with classes, objects, and inheritance.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_2' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2133,
+              "neutral": 0.6667,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0427
+          },
+          {
+            "claim_text": "Tuples in Python are immutable ordered sequences created with parentheses like my_tuple = (1, 2, 3).",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2133,
+              "neutral": 0.6667,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0427
+          },
+          {
+            "claim_text": "Because tuples are immutable, they are faster and more memory-efficient than lists, can be used as dictionary keys, and protect constant data such as coordinates from accidental modification.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2133,
+              "neutral": 0.6667,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0427
+          },
+          {
+            "claim_text": "Lists in Python are mutable ordered sequences created with square brackets like my_list = [1, 2, 3], where you can modify, append, insert, remove, pop, sort, reverse, and slice elements in place.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.9,
+            "llm_reasoning": "Claim uses opposite polarity ('mutable' vs 'immutable') relative to evidence in chunk 'chunk_1'. [NLI Cross-Check: Entailed by chunk_1 (lexical-structural overlap=1.00).]",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": false,
+            "disagreement_type": "LLM_FALSE_NEGATIVE",
+            "calibrated_score": 0.588
+          },
+          {
+            "claim_text": "— *[Learn Python - Full Course for Beginners [Tutorial]](https://youtube.com/watch?v=rfscVS0vtbw)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_2', coverage=40%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2133,
+              "neutral": 0.6667,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0427
+          }
+        ],
+        "disagreement_count": 1,
+        "has_judge_disagreement": true,
+        "contradiction_count": 0,
+        "unverifiable_count": 6,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['rfscVS0vtbw_chunk_0', 'rfscVS0vtbw_chunk_1'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.44).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 3.72,
+      "passed": false
+    },
+    {
+      "query_id": "fcc_02_javascript_es6",
+      "question": "How are variables declared in modern ES6 JavaScript and what asynchronous features are covered?",
+      "category": "freeCodeCamp - JavaScript",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- In modern ES6 JavaScript, we declare variables using let for block-scoped mutable variables and const for constants, preferring them over var which is function-scoped and hoisted. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- This complete 134-part JavaScript tutorial from freeCodeCamp walks through everything from basic syntax to ES6 features. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- JavaScript is the scripting language of the web that runs directly in the browser and on the server via Node.js. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*\n- We cover arrow functions, destructuring assignments, template literals, spread and rest operators, promises, async/await for asynchronous API calls, and DOM manipulation to build interactive frontend web applications. — *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*",
+      "ground_truth_answer": "In modern ES6 JavaScript, variables are declared using let for block-scoped mutable variables and const for constants instead of var, and asynchronous API calls use promises and async/await.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "This complete 134-part JavaScript tutorial from freeCodeCamp walks through everything from basic syntax to ES6 features. JavaScript is the scripting language of the web that runs directly in the browser and on the server via Node.js. In modern ES6 JavaScript, we declare variables using let for block-scoped mutable variables and const for constants, preferring them over var which is function-scoped and hoisted. We cover arrow functions, destructuring assignments, template literals, spread and rest operators, promises, async/await for asynchronous API calls, and DOM manipulation to build interactive frontend web applications.",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "PkZNo7MFNFg_chunk_0"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.5278,
+        "nli_entailment_score": 0.4578,
+        "cross_checked_score": 0.4493,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.16,
+              "neutral": 0.79,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.032
+          },
+          {
+            "claim_text": "In modern ES6 JavaScript, we declare variables using let for block-scoped mutable variables and const for constants, preferring them over var which is function-scoped and hoisted.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          },
+          {
+            "claim_text": "This complete 134-part JavaScript tutorial from freeCodeCamp walks through everything from basic syntax to ES6 features.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          },
+          {
+            "claim_text": "JavaScript is the scripting language of the web that runs directly in the browser and on the server via Node.js.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          },
+          {
+            "claim_text": "We cover arrow functions, destructuring assignments, template literals, spread and rest operators, promises, async/await for asynchronous API calls, and DOM manipulation to build interactive frontend web applications.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn JavaScript - Full Course for Beginners](https://youtube.com/watch?v=PkZNo7MFNFg)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=11%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 0,
+        "unverifiable_count": 5,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['PkZNo7MFNFg_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.45).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 3.04,
+      "passed": false
+    },
+    {
+      "query_id": "fcc_03_ml_paradigms",
+      "question": "What are the three main paradigms of Machine Learning and what supervised classification algorithms are covered?",
+      "category": "freeCodeCamp - Machine Learning",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- There are three main paradigms: Supervised Learning (where we train on labeled features X and target labels Y for classification and regression), Unsupervised Learning (where we discover hidden structure in unlabeled data using clustering like K-Means or dimensionality reduction like PCA), and Reinforcement Learning (where an agent learns to take actions in an environment to maximize cumulative reward). — *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*\n- Welcome to Machine Learning for Everybody on freeCodeCamp, taught by Kylie Ying. — *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*\n- Machine learning is a subfield of artificial intelligence where computers learn patterns from data without being explicitly programmed. — *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*\n- In supervised classification, we cover K-Nearest Neighbors (KNN), Naive Bayes, Logistic Regression, Support Vector Machines (SVM), and Neural Networks using TensorFlow and scikit-learn, evaluating models with precision, recall, F1-score, and confusion matrices. — *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*",
+      "ground_truth_answer": "The three main paradigms are Supervised Learning, Unsupervised Learning, and Reinforcement Learning. Supervised classification covers K-Nearest Neighbors (KNN), Naive Bayes, Logistic Regression, Support Vector Machines (SVM), and Neural Networks.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "Welcome to Machine Learning for Everybody on freeCodeCamp, taught by Kylie Ying. Machine learning is a subfield of artificial intelligence where computers learn patterns from data without being explicitly programmed. There are three main paradigms: Supervised Learning (where we train on labeled features X and target labels Y for classification and regression), Unsupervised Learning (where we discover hidden structure in unlabeled data using clustering like K-Means or dimensionality reduction like PCA), and Reinforcement Learning (where an agent learns to take actions in an environment to maximize cumulative reward). In supervised classification, we cover K-Nearest Neighbors (KNN), Naive Bayes, Logistic Regression, Support Vector Machines (SVM), and Neural Networks using TensorFlow and scikit-learn, evaluating models with precision, recall, F1-score, and confusion matrices.",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "NWONeJKn6kc_chunk_0"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.5278,
+        "nli_entailment_score": 0.4844,
+        "cross_checked_score": 0.46,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.16,
+              "neutral": 0.79,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.032
+          },
+          {
+            "claim_text": "There are three main paradigms: Supervised Learning (where we train on labeled features X and target labels Y for classification and regression), Unsupervised Learning (where we discover hidden structure in unlabeled data using clustering like K-Means or dimensionality reduction like PCA), and Reinforcement Learning (where an agent learns to take actions in an environment to maximize cumulative reward).",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.7,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "Welcome to Machine Learning for Everybody on freeCodeCamp, taught by Kylie Ying.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.7,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "Machine learning is a subfield of artificial intelligence where computers learn patterns from data without being explicitly programmed.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.7,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "In supervised classification, we cover K-Nearest Neighbors (KNN), Naive Bayes, Logistic Regression, Support Vector Machines (SVM), and Neural Networks using TensorFlow and scikit-learn, evaluating models with precision, recall, F1-score, and confusion matrices.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Machine Learning for Everybody – Full Course](https://youtube.com/watch?v=NWONeJKn6kc)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=33%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.7,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 0,
+        "unverifiable_count": 5,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['NWONeJKn6kc_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.46).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 2.74,
+      "passed": false
+    },
+    {
+      "query_id": "fcc_04_rag_architecture",
+      "question": "What are the three stages of the core RAG pipeline and what advanced RAG techniques are taught?",
+      "category": "freeCodeCamp - RAG",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **freeCodeCamp.org**\n\n- The core RAG pipeline has three stages: Indexing (loading documents, splitting them into chunks, embedding chunks into dense vectors, and storing them in a vector database), Retrieval (embedding the user's question and running k-nearest-neighbor cosine similarity search to fetch the most relevant chunks), and Generation (passing the retrieved chunks as context into the LLM prompt so the model generates a grounded, factual answer with source citations). — *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*\n- Advanced RAG techniques covered in this course include Multi-Query retrieval, RAG-Fusion with Reciprocal Rank Fusion (RRF), HyDE (Hypothetical Document Embeddings), query routing, and parent-document retrieval. — *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*\n- In this freeCodeCamp course taught by Lance Martin from LangChain, you will learn how to build Retrieval-Augmented Generation (RAG) systems from scratch. — *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*\n- RAG connects Large Language Models to external knowledge sources like PDFs, documentation, databases, and YouTube transcripts. — *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*",
+      "ground_truth_answer": "The core RAG pipeline consists of Indexing, Retrieval, and Generation. Advanced techniques include Multi-Query retrieval, RAG-Fusion with Reciprocal Rank Fusion (RRF), HyDE, and query routing.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "In this freeCodeCamp course taught by Lance Martin from LangChain, you will learn how to build Retrieval-Augmented Generation (RAG) systems from scratch. RAG connects Large Language Models to external knowledge sources like PDFs, documentation, databases, and YouTube transcripts. The core RAG pipeline has three stages: Indexing (loading documents, splitting them into chunks, embedding chunks into dense vectors, and storing them in a vector database), Retrieval (embedding the user's question and running k-nearest-neighbor cosine similarity search to fetch the most relevant chunks), and Generation (passing the retrieved chunks as context into the LLM prompt so the model generates a grounded, factual answer with source citations). Advanced RAG techniques covered in this course include Multi-Query retrieval, RAG-Fusion with Reciprocal Rank Fusion (RRF), HyDE (Hypothetical Document Embeddings), query routing, and parent-document retrieval.",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "sVcwVQRHIc8_chunk_0"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.6222,
+        "nli_entailment_score": 0.5929,
+        "cross_checked_score": 0.5699,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **freeCodeCamp.org**.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "The core RAG pipeline has three stages: Indexing (loading documents, splitting them into chunks, embedding chunks into dense vectors, and storing them in a vector database), Retrieval (embedding the user's question and running k-nearest-neighbor cosine similarity search to fetch the most relevant chunks), and Generation (passing the retrieved chunks as context into the LLM prompt so the model generates a grounded, factual answer with source citations).",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=42%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2182,
+              "neutral": 0.6618,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0436
+          },
+          {
+            "claim_text": "Advanced RAG techniques covered in this course include Multi-Query retrieval, RAG-Fusion with Reciprocal Rank Fusion (RRF), HyDE (Hypothetical Document Embeddings), query routing, and parent-document retrieval.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=42%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2182,
+              "neutral": 0.6618,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0436
+          },
+          {
+            "claim_text": "In this freeCodeCamp course taught by Lance Martin from LangChain, you will learn how to build Retrieval-Augmented Generation (RAG) systems from scratch.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=42%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2182,
+              "neutral": 0.6618,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0436
+          },
+          {
+            "claim_text": "RAG connects Large Language Models to external knowledge sources like PDFs, documentation, databases, and YouTube transcripts.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer](https://youtube.com/watch?v=sVcwVQRHIc8)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=42%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.2182,
+              "neutral": 0.6618,
+              "contradiction": 0.12
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0436
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 0,
+        "unverifiable_count": 4,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['sVcwVQRHIc8_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.57).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 2.73,
+      "passed": false
+    },
+    {
+      "query_id": "karpathy_01_self_attention",
+      "question": "How does self-attention work in a Transformer using Query, Key, and Value vectors?",
+      "category": "Karpathy - Transformers",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **Andrej Karpathy**\n\n- Self-attention is a communication mechanism where every token emits three vectors: a Query vector, a Key vector, and a Value vector. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- At the heart of the Transformer architecture is the self-attention mechanism. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- We take the dot product between the Queries and the Keys, divide by the square root of the head dimension d_k for scaled dot-product attention, apply a causal mask so future tokens cannot communicate with past tokens in autoregressive decoding, and then softmax to get attention weights. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- Finally, we aggregate the Value vectors using those attention weights. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*\n- Multi-head attention simply runs multiple self-attention heads in parallel and concatenates their outputs, allowing the Transformer to attend to information from different representation subspaces at different positions. — *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*",
+      "ground_truth_answer": "Every token emits Query, Key, and Value vectors. We compute scaled dot-product attention between Queries and Keys, apply a causal mask and softmax to get attention weights, and aggregate the Value vectors.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "Hello everyone, welcome! Today we are going to build GPT from scratch, in code, spelled out. We will follow the seminal paper Attention Is All You Need and OpenAI's GPT-2 and GPT-3 papers. At the heart of the Transformer architecture is the self-attention mechanism. Why do we need attention mechanisms? In a language model, tokens in a sequence need to communicate with each other to aggregate information from the past. Self-attention is a communication mechanism where every token emits three vectors: a Query vector, a Key vector, and a Value vector. The Query vector says what am I looking for? The Key vector says what do I contain? We take the dot product between the Queries and the Keys, divide by the square root of the head dimension d_k for scaled dot-product attention, apply a causal mask so future tokens",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        },
+        {
+          "chunk_id": "chunk_2",
+          "text": "vector. The Query vector says what am I looking for? The Key vector says what do I contain? We take the dot product between the Queries and the Keys, divide by the square root of the head dimension d_k for scaled dot-product attention, apply a causal mask so future tokens cannot communicate with past tokens in autoregressive decoding, and then softmax to get attention weights. Finally, we aggregate the Value vectors using those attention weights. Multi-head attention simply runs multiple self-attention heads in parallel and concatenates their outputs, allowing the Transformer to attend to information from different representation subspaces at different positions. After communication via multi-head self-attention, each token processes what it gathered independently through a feed-forward multilayer perceptron (MLP). Crucially, residual connections (skip highways) and LayerNorm (pre-norm formulation) make deep Transformers trainable.",
+          "score": 0.0,
+          "rank": 2,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "kCc8FmEb1nY_chunk_0",
+        "kCc8FmEb1nY_chunk_1"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.4682,
+        "nli_entailment_score": 0.4482,
+        "cross_checked_score": 0.4515,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **Andrej Karpathy**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=0%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          },
+          {
+            "claim_text": "Self-attention is a communication mechanism where every token emits three vectors: a Query vector, a Key vector, and a Value vector.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.88,
+            "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+            "nli_label": "CONTRADICTION",
+            "nli_probabilities": {
+              "entailment": 0.03,
+              "neutral": 0.06,
+              "contradiction": 0.91
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0
+          },
+          {
+            "claim_text": "At the heart of the Transformer architecture is the self-attention mechanism.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.88,
+            "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+            "nli_label": "CONTRADICTION",
+            "nli_probabilities": {
+              "entailment": 0.03,
+              "neutral": 0.06,
+              "contradiction": 0.91
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0
+          },
+          {
+            "claim_text": "We take the dot product between the Queries and the Keys, divide by the square root of the head dimension d_k for scaled dot-product attention, apply a causal mask so future tokens cannot communicate with past tokens in autoregressive decoding, and then softmax to get attention weights.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_2' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.88,
+            "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+            "nli_label": "CONTRADICTION",
+            "nli_probabilities": {
+              "entailment": 0.03,
+              "neutral": 0.06,
+              "contradiction": 0.91
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0
+          },
+          {
+            "claim_text": "Finally, we aggregate the Value vectors using those attention weights.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_2' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.88,
+            "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+            "nli_label": "CONTRADICTION",
+            "nli_probabilities": {
+              "entailment": 0.03,
+              "neutral": 0.06,
+              "contradiction": 0.91
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0
+          },
+          {
+            "claim_text": "Multi-head attention simply runs multiple self-attention heads in parallel and concatenates their outputs, allowing the Transformer to attend to information from different representation subspaces at different positions.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_2' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.",
+            "llm_verdict": "CONTRADICTED",
+            "llm_confidence": 0.88,
+            "llm_reasoning": "Claim states quantity ['8', '1'] which conflicts with figures ['2', '3'] in chunk 'chunk_1'.",
+            "nli_label": "CONTRADICTION",
+            "nli_probabilities": {
+              "entailment": 0.03,
+              "neutral": 0.06,
+              "contradiction": 0.91
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.0
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 5,
+        "unverifiable_count": 1,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "INTRINSIC_CONTRADICTION",
+      "failure_explanation": "Generated answer contradicts retrieved evidence (5 contradicted claim(s)): \"— *[Let's build GPT: from scratch, in code, spelled out](https://youtube.com/watch?v=kCc8FmEb1nY)*.\"",
+      "remediation_hint": "Keep structured tables/policies intact during chunking (semantic/markdown-header chunking) and instruct the generator to verify entity scope before stating numbers.",
+      "latency_ms": 2.89,
+      "passed": false
+    },
+    {
+      "query_id": "karpathy_02_llm_os",
+      "question": "What are the stages of training an LLM and how does an LLM act like an Operating System with RAM and disk?",
+      "category": "Karpathy - LLM Intro",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **Andrej Karpathy**\n\n- We can also think of LLMs as the kernel process of an emerging Operating System: the context window acts as RAM (working memory), Retrieval-Augmented Generation (RAG) acts as the file system or disk storage where we fetch relevant documents into the context window, and tools like code interpreters, calculators, and web search act as system calls. — *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*\n- Training an LLM happens in stages. — *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*\n- In this talk we give a general introduction to Large Language Models (LLMs). — *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*\n- An LLM really consists of two files: a parameters file containing billions of float16 or int8 weights, and a small code file that runs the neural network architecture, almost always a Transformer. — *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*\n- Stage 1 is Pre-training: compressing terabytes of internet text into neural network weights using next-token prediction. — *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*",
+      "ground_truth_answer": "Training happens in Stage 1 Pre-training and Stage 2 Fine-tuning and Alignment (SFT and RLHF). In the LLM Operating System analogy, the context window acts as RAM (working memory) and RAG acts as the file system or disk storage.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "In this talk we give a general introduction to Large Language Models (LLMs). An LLM really consists of two files: a parameters file containing billions of float16 or int8 weights, and a small code file that runs the neural network architecture, almost always a Transformer. Training an LLM happens in stages. Stage 1 is Pre-training: compressing terabytes of internet text into neural network weights using next-token prediction. This costs millions of dollars and thousands of GPUs, producing a base model that is essentially a document completer. Stage 2 is Fine-tuning and Alignment (Supervised Fine-Tuning or SFT, followed by RLHF — Reinforcement Learning from Human Feedback). This turns the base model into a helpful assistant that answers questions and follows instructions. We can also think of LLMs as the kernel process of an emerging Operating System: the context window acts as",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        },
+        {
+          "chunk_id": "chunk_2",
+          "text": "and Alignment (Supervised Fine-Tuning or SFT, followed by RLHF — Reinforcement Learning from Human Feedback). This turns the base model into a helpful assistant that answers questions and follows instructions. We can also think of LLMs as the kernel process of an emerging Operating System: the context window acts as RAM (working memory), Retrieval-Augmented Generation (RAG) acts as the file system or disk storage where we fetch relevant documents into the context window, and tools like code interpreters, calculators, and web search act as system calls.",
+          "score": 0.0,
+          "rank": 2,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "zjkBMFhNj_g_chunk_0",
+        "zjkBMFhNj_g_chunk_1"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.9227,
+        "nli_entailment_score": 0.8223,
+        "cross_checked_score": 0.8698,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **Andrej Karpathy**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=25%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.12,
+              "neutral": 0.83,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.024
+          },
+          {
+            "claim_text": "We can also think of LLMs as the kernel process of an emerging Operating System: the context window acts as RAM (working memory), Retrieval-Augmented Generation (RAG) acts as the file system or disk storage where we fetch relevant documents into the context window, and tools like code interpreters, calculators, and web search act as system calls.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_2' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_2",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.82,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=57%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.8171,
+              "neutral": 0.1729,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.9177
+          },
+          {
+            "claim_text": "Training an LLM happens in stages.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.82,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=57%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.8171,
+              "neutral": 0.1729,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.9177
+          },
+          {
+            "claim_text": "In this talk we give a general introduction to Large Language Models (LLMs).",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.82,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=57%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.8171,
+              "neutral": 0.1729,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.9177
+          },
+          {
+            "claim_text": "An LLM really consists of two files: a parameters file containing billions of float16 or int8 weights, and a small code file that runs the neural network architecture, almost always a Transformer.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.82,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=57%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.8171,
+              "neutral": 0.1729,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.9177
+          },
+          {
+            "claim_text": "Stage 1 is Pre-training: compressing terabytes of internet text into neural network weights using next-token prediction.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Intro to Large Language Models](https://youtube.com/watch?v=zjkBMFhNj_g)*.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.82,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=57%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.8171,
+              "neutral": 0.1729,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.9177
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 0,
+        "unverifiable_count": 1,
+        "is_abstention": false
+      },
+      "answer_completeness": 0.75,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['zjkBMFhNj_g_chunk_0', 'zjkBMFhNj_g_chunk_1'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.87).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 2.73,
+      "passed": false
+    },
+    {
+      "query_id": "karpathy_03_bpe_tokenizer",
+      "question": "How does Byte Pair Encoding (BPE) tokenization work in GPT models?",
+      "category": "Karpathy - Tokenization",
+      "pipeline_name": "youtube-channel-rag",
+      "generated_answer": "### Grounded Answer from **Andrej Karpathy**\n\n- Today we are going to build the GPT Tokenizer from scratch using Byte Pair Encoding (BPE). — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- In Byte Pair Encoding, we start with raw bytes (256 tokens) and iteratively merge the most frequent adjacent pair of tokens into a new vocabulary token until we reach our target vocabulary size, such as 50,257 for GPT-2 or 100,277 for GPT-4 cl100k_base. — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- Tokenization is the translation layer between raw UTF-8 strings and the discrete integer token IDs that Transformers actually see. — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*\n- Many quirky LLM failure modes—like struggling to spell words backward, counting letters in 'strawberry', doing arithmetic, or handling non-English languages and YAML whitespace—actually trace right back to tokenization! — *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*",
+      "ground_truth_answer": "Byte Pair Encoding starts with 256 raw byte tokens and iteratively merges the most frequent adjacent pair of tokens into new vocabulary tokens until reaching target vocabulary size such as 50,257 for GPT-2 or 100,277 for GPT-4.",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "chunk_1",
+          "text": "Today we are going to build the GPT Tokenizer from scratch using Byte Pair Encoding (BPE). Tokenization is the translation layer between raw UTF-8 strings and the discrete integer token IDs that Transformers actually see. Many quirky LLM failure modes—like struggling to spell words backward, counting letters in 'strawberry', doing arithmetic, or handling non-English languages and YAML whitespace—actually trace right back to tokenization! In Byte Pair Encoding, we start with raw bytes (256 tokens) and iteratively merge the most frequent adjacent pair of tokens into a new vocabulary token until we reach our target vocabulary size, such as 50,257 for GPT-2 or 100,277 for GPT-4 cl100k_base.",
+          "score": 0.0,
+          "rank": 1,
+          "metadata": {}
+        }
+      ],
+      "golden_chunk_ids": [
+        "zduSFxRajkE_chunk_0"
+      ],
+      "retrieval": {
+        "k": 5,
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "hit_rate": 0.0,
+        "context_fact_coverage": 1.0,
+        "first_relevant_rank": null
+      },
+      "faithfulness": {
+        "llm_judge_score": 0.5278,
+        "nli_entailment_score": 0.4789,
+        "cross_checked_score": 0.4578,
+        "claims": [
+          {
+            "claim_text": "### Grounded Answer from **Andrej Karpathy**.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=0%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.06,
+              "neutral": 0.88,
+              "contradiction": 0.06
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.012
+          },
+          {
+            "claim_text": "Today we are going to build the GPT Tokenizer from scratch using Byte Pair Encoding (BPE).",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.77,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "In Byte Pair Encoding, we start with raw bytes (256 tokens) and iteratively merge the most frequent adjacent pair of tokens into a new vocabulary token until we reach our target vocabulary size, such as 50,257 for GPT-2 or 100,277 for GPT-4 cl100k_base.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.77,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "Tokenization is the translation layer between raw UTF-8 strings and the discrete integer token IDs that Transformers actually see.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.77,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          },
+          {
+            "claim_text": "Many quirky LLM failure modes—like struggling to spell words backward, counting letters in 'strawberry', doing arithmetic, or handling non-English languages and YAML whitespace—actually trace right back to tokenization!.",
+            "llm_verdict": "SUPPORTED",
+            "llm_confidence": 0.95,
+            "llm_reasoning": "Key entities and predicates in the claim align with passage context in chunk 'chunk_1' (semantic coverage=100%).",
+            "nli_label": "ENTAILMENT",
+            "nli_probabilities": {
+              "entailment": 0.98,
+              "neutral": 0.01,
+              "contradiction": 0.01
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.991
+          },
+          {
+            "claim_text": "— *[Let's build the GPT Tokenizer](https://youtube.com/watch?v=zduSFxRajkE)*.",
+            "llm_verdict": "UNVERIFIABLE",
+            "llm_confidence": 0.86,
+            "llm_reasoning": "Retrieved chunks (best match: 'chunk_1', coverage=38%) do not contain sufficient evidence to verify this claim.",
+            "nli_label": "NEUTRAL",
+            "nli_probabilities": {
+              "entailment": 0.18,
+              "neutral": 0.77,
+              "contradiction": 0.05
+            },
+            "best_chunk_id": "chunk_1",
+            "agreement": true,
+            "disagreement_type": null,
+            "calibrated_score": 0.036
+          }
+        ],
+        "disagreement_count": 0,
+        "has_judge_disagreement": false,
+        "contradiction_count": 0,
+        "unverifiable_count": 5,
+        "is_abstention": false
+      },
+      "answer_completeness": 1.0,
+      "failure_category": "RETRIEVAL_MISS",
+      "failure_explanation": "Retriever missed golden chunk(s) ['zduSFxRajkE_chunk_0'] (Recall@5=0.00), causing generator to hallucinate unsupported facts (Faithfulness=0.46).",
+      "remediation_hint": "Switch from pure dense embeddings to Hybrid Search (BM25 + Dense with Reciprocal Rank Fusion) and add query expansion for exact error codes, CLI flags, and acronyms.",
+      "latency_ms": 2.37,
+      "passed": false
+    }
+  ]
+}
