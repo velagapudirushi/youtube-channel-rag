@@ -1,5 +1,7 @@
 # Architecture, Codebase Structure & Design Decisions (`youtube-channel-rag`)
 
+🌐 **Live Deployed App:** **[https://youtube-channel-rag.streamlit.app/](https://youtube-channel-rag.streamlit.app/)**
+
 This document explains **how `youtube-channel-rag` works under the hood**, **how the codebase is organized**, **what alternative technical options exist**, **why we chose every component in this stack**, and **how it integrates with `rag-eval-harness`**.
 
 ---

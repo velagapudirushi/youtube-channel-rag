@@ -1,5 +1,12 @@
 # 🎥 YouTube Channel RAG — Complete Architecture & Engineering Guide
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://youtube-channel-rag.streamlit.app/)
+[![Pass Rate](https://img.shields.io/badge/RAG_Eval_Harness-100%25_Pass_Rate-10b981)](EVALUATION_REPORT.md)
+[![Recall@5](https://img.shields.io/badge/Recall%405-100%25-06b6d4)](EVALUATION_REPORT.md)
+[![Faithfulness](https://img.shields.io/badge/Faithfulness-98.0%25-8b5cf6)](EVALUATION_REPORT.md)
+
+🌐 **Live Streamlit Application:** **[https://youtube-channel-rag.streamlit.app/](https://youtube-channel-rag.streamlit.app/)**
+
 Turn **any** YouTube channel (`@freecodecamp`, `@AndrejKarpathy`, `@fireship`, `@3blue1brown`, playlists, or individual videos) into a searchable knowledge base. Ask natural-language questions across hundreds of hours of video content and get grounded answers with direct video source links—without watching a single video.
 
 ![YouTube Channel RAG Visual Architecture](docs/assets/architecture_pipeline.svg)
