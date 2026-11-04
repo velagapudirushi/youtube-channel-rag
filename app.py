@@ -74,8 +74,8 @@ with st.sidebar:
     max_videos = st.slider(
         "Max Videos to Index (`playlistend`)",
         min_value=1,
-        max_value=100,
-        value=10,
+        max_value=50,
+        value=5,
         help="Number of recent videos to fetch when indexing a live YouTube channel.",
     )
     chunk_size = st.slider(
@@ -98,6 +98,16 @@ with st.sidebar:
         help="Clears older channel chunks so answers only come from the newly indexed channel.",
     )
 
+    # Pre-seed default collection on fresh container startup so ChromaDB is never empty
+    if collection.count() == 0 and not st.session_state.get("user_cleared"):
+        init_stats = index_sample_channel(
+            preset_name="freeCodeCamp.org (@freecodecamp)",
+            api_key=active_api_key,
+            replace_existing=False,
+        )
+        st.session_state["last_index_stats"] = init_stats
+        st.session_state["indexed_channel_url"] = _normalize_channel_url("https://www.youtube.com/@freecodecamp/videos")
+
     st.divider()
     st.subheader("🗄️ ChromaDB Status")
     chunk_count = collection.count()
@@ -105,6 +115,7 @@ with st.sidebar:
 
     if st.button("🗑️ Clear ChromaDB Collection", use_container_width=True):
         clear_collection(collection)
+        st.session_state["user_cleared"] = True
         st.session_state.pop("last_index_stats", None)
         st.session_state.pop("indexed_channel_url", None)
         st.rerun()

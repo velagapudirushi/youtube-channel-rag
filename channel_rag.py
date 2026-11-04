@@ -19,6 +19,7 @@ import json
 import math
 import os
 import re
+import tempfile
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -29,8 +30,9 @@ from openai import OpenAI
 from youtube_transcript_api import YouTubeTranscriptApi
 from yt_dlp import YoutubeDL
 
-# Persistent ChromaDB storage path so indexed channels survive Streamlit reruns
-DEFAULT_CHROMA_PATH = str(Path(__file__).resolve().parent / ".chroma_db")
+# Store ChromaDB in system temp directory outside the watched git repo so Streamlit Cloud's
+# file watcher never reloads/invalidates JS bundles during database writes
+DEFAULT_CHROMA_PATH = str(Path(tempfile.gettempdir()) / "youtube_channel_rag_chroma")
 
 # Stopwords and spoken transcript filler words excluded from local embeddings & keyword reranking
 STOPWORDS = {
@@ -280,17 +282,19 @@ def get_chroma_collection(
     persist_directory: Optional[str] = DEFAULT_CHROMA_PATH,
     in_memory: bool = False,
 ):
-    """Get or create the ChromaDB collection."""
+    """Get or create the ChromaDB collection (with automatic in-memory fallback on restricted cloud containers)."""
     if in_memory or not persist_directory:
         chroma_client = chromadb.Client()
     else:
-        chroma_client = chromadb.PersistentClient(path=persist_directory)
+        try:
+            chroma_client = chromadb.PersistentClient(path=persist_directory)
+        except Exception:
+            chroma_client = chromadb.Client()
     return chroma_client.get_or_create_collection(name=collection_name)
 
 
 # Global default collection matching the tutorial slides
-chroma = chromadb.PersistentClient(path=DEFAULT_CHROMA_PATH)
-collection = chroma.get_or_create_collection("youtube_channel")
+collection = get_chroma_collection("youtube_channel", persist_directory=DEFAULT_CHROMA_PATH)
 
 
 def _normalize_channel_url(channel_url: str) -> str:
@@ -339,6 +343,9 @@ def get_channel_videos(channel_url: str, max_videos: int = 100) -> list[dict[str
         "quiet": True,
         "no_warnings": True,
         "ignoreerrors": True,
+        "socket_timeout": 6,
+        "retries": 1,
+        "extractor_retries": 1,
         "playlistend": max_videos,
     }
     with YoutubeDL(ydl_opts) as ydl:
@@ -479,6 +486,9 @@ def _extract_transcript_via_ytdlp(video_id: str) -> Optional[str]:
         "skip_download": True,
         "quiet": True,
         "no_warnings": True,
+        "socket_timeout": 6,
+        "retries": 1,
+        "extractor_retries": 1,
         "writesubtitles": True,
         "writeautomaticsub": True,
     }
@@ -645,27 +655,41 @@ def _index_video_list(
             skipped += 1
             continue
 
-        chunks = chunk_text(transcript, chunk_size=chunk_size)
+        chunks = chunk_text(transcript, chunk_size=chunk_size)[:40]
+        if not chunks:
+            skipped += 1
+            continue
+
+        batch_docs = []
+        batch_embs = []
+        batch_ids = []
+        batch_metas = []
+
         for i, chunk in enumerate(chunks):
             enriched_chunk = f"<<<Channel: {channel_name} | Video Title: {video_title}>>> {chunk}"
             embedding = get_embedding(enriched_chunk, api_key=effective_key)
-            active_collection.upsert(
-                documents=[enriched_chunk],
-                embeddings=[embedding],
-                ids=[f"{video_id}_{embed_mode}_chunk_{i}"],
-                metadatas=[
-                    {
-                        "video_id": video_id,
-                        "title": video_title,
-                        "channel": channel_name,
-                        "chunk_index": i,
-                        "embed_mode": embed_mode,
-                        "channel_url": channel_url,
-                        "url": f"https://youtube.com/watch?v={video_id}",
-                    }
-                ],
+            batch_docs.append(enriched_chunk)
+            batch_embs.append(embedding)
+            batch_ids.append(f"{video_id}_{embed_mode}_chunk_{i}")
+            batch_metas.append(
+                {
+                    "video_id": video_id,
+                    "title": video_title,
+                    "channel": channel_name,
+                    "chunk_index": i,
+                    "embed_mode": embed_mode,
+                    "channel_url": channel_url,
+                    "url": f"https://youtube.com/watch?v={video_id}",
+                }
             )
-            total_chunks += 1
+
+        active_collection.upsert(
+            documents=batch_docs,
+            embeddings=batch_embs,
+            ids=batch_ids,
+            metadatas=batch_metas,
+        )
+        total_chunks += len(batch_docs)
 
         indexed += 1
         indexed_videos.append(
