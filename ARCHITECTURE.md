@@ -8,7 +8,7 @@ This document explains **how `youtube-channel-rag` works under the hood**, **how
 
 ## 1. Visual System Architecture
 
-![System Architecture Pipeline](docs/assets/architecture_pipeline.svg)
+![System Architecture Pipeline](docs/assets/architecture_pipeline.jpg)
 
 ### End-to-End Execution Flow
 1. **Universal Channel & Handle Normalization (`_normalize_channel_url` in `channel_rag.py`):**
@@ -59,7 +59,7 @@ youtube-channel-rag/
 ├── .github/workflows/
 │   └── ci.yml                             # GitHub Actions CI workflow running unit tests & RAG Eval Harness benchmark
 ├── docs/assets/
-│   ├── architecture_pipeline.svg          # Vector diagram of the 4-stage YouTube RAG + Eval Harness architecture
+│   ├── architecture_pipeline.jpg          # System architecture diagram of the YouTube RAG + Eval Harness pipeline
 │   └── eval_benchmark.svg                 # Vector chart of benchmark metrics (Recall@5, MRR, NDCG@5, Faithfulness)
 ├── src/rag_harness/                       # Bundled Standalone RAG Evaluation Harness (`RAGEvaluator`, Dual-Judge NLI/LLM)
 │   ├── __init__.py

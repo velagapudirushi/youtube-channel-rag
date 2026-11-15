@@ -9,7 +9,7 @@
 
 Turn **any** YouTube channel (`@freecodecamp`, `@AndrejKarpathy`, `@fireship`, `@3blue1brown`, playlists, or individual videos) into a searchable knowledge base. Ask natural-language questions across hundreds of hours of video content and get grounded answers with direct video source links—without watching a single video.
 
-![YouTube Channel RAG Visual Architecture](docs/assets/architecture_pipeline.svg)
+![YouTube Channel RAG Visual Architecture](docs/assets/architecture_pipeline.jpg)
 
 > 📖 **See also:** [ARCHITECTURE.md](ARCHITECTURE.md) for the complete codebase file map and system internals, and [EVALUATION_REPORT.md](EVALUATION_REPORT.md) for the full Dual-Engine (`LLM-as-a-Judge` × `NLI Entailment`) evaluation report (**100% Pass Rate**, **Recall@5 = 100%**, **MRR = 1.000**, **Faithfulness = 98.0%**).
 
