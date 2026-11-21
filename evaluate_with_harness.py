@@ -21,12 +21,10 @@ for p in (PROJECT_DIR, LOCAL_SRC_DIR, SIBLING_HARNESS_SRC_DIR):
     if p.exists() and str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from channel_rag import (
-    SAMPLE_CHANNELS,
-    _index_video_list,
-    get_chroma_collection,
-    query_channel,
-)
+from youtube_rag.generator import query_channel
+from youtube_rag.indexer import _index_video_list
+from youtube_rag.sample_data import SAMPLE_CHANNELS
+from youtube_rag.vector_store import get_chroma_collection
 from rag_harness.adapters import CallablePipelineAdapter
 from rag_harness.evaluator import RAGEvaluator
 from rag_harness.reporting.markdown import generate_markdown_report

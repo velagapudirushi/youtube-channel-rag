@@ -168,30 +168,37 @@ In [`query_channel()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch
 
 ## 🗂️ File-by-File & Function-by-Function Breakdown
 
-### 1. [`channel_rag.py`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py) — Core Engine
-- **`is_valid_openai_key(api_key)`**: Guards against placeholder strings like `"sk-..."`, `"sk-...."` (which cause `401 AuthenticationError`), or empty keys.
+The codebase is modularized by responsibility inside `src/youtube_rag/`:
+
+### 1. [`src/youtube_rag/youtube_api.py`](src/youtube_rag/youtube_api.py) — YouTube API & Transcript Extraction
 - **`_normalize_channel_url(channel_url)`**: Converts any input (`@freecodecamp`, `freecodecamp`, `https://www.youtube.com/@freecodecamp`, playlist URLs, or single video URLs) into a canonical URL that `yt-dlp` can extract cleanly.
 - **`get_channel_videos(channel_url, max_videos)`**: Uses `yt-dlp` in flat-extraction mode to fetch video IDs, titles, channel names, and descriptions from any YouTube channel.
-- **`get_transcript(video_id)`**: 3-tier transcript extractor:
-  1. `youtube-transcript-api` across English regional codes (`en`, `en-US`, `en-GB`, `en-IN`, `en-CA`, `en-AU`).
-  2. `youtube-transcript-api` transcript list fallback for auto-generated captions in any available track.
-  3. `_extract_transcript_via_ytdlp(video_id)` fallback that downloads JSON3 caption tracks or extracts course chapters + syllabus descriptions via `yt-dlp`.
+- **`search_channel_videos_for_query(channel_url, question)`**: Dynamically searches inside a specific YouTube channel (`/@channel/search?query=...`) via `yt-dlp` when a user asks about an older topic not in the 10 newest uploads.
+- **`get_transcript(video_id)`**: 3-tier transcript extractor (`youtube-transcript-api` English regional codes $\to$ auto-caption track fallback $\to$ `_extract_transcript_via_ytdlp` JSON3/chapters/syllabus fallback).
+
+### 2. [`src/youtube_rag/chunking.py`](src/youtube_rag/chunking.py) — Sliding-Window Chunking & Stemming
 - **`chunk_text(text, chunk_size=500, overlap=50)`**: Splits transcript text into 500-word chunks with a 50-word sliding overlap.
+- **`extract_content_keywords(text)` & `_stem_token(word)`**: Filters 100+ stopwords and spoken transcript filler (`"uh"`, `"um"`, `"right"`, `"okay"`) and normalizes plurals (`lists` $\to$ `list`, `tuples` $\to$ `tuple`).
+
+### 3. [`src/youtube_rag/embeddings.py`](src/youtube_rag/embeddings.py) — OpenAI & Local Embedding Engine
+- **`is_valid_openai_key(api_key)`**: Guards against placeholder strings like `"sk-..."`, `"sk-...."` (which cause `401 AuthenticationError`), or empty keys.
 - **`get_embedding(text, api_key)`**: Calls OpenAI `text-embedding-3-small` wrapped in a `try/except` block; if no key is provided or if OpenAI returns any API error, automatically falls back to `_local_deterministic_embedding()` (384-d unit-normalized unigram+bigram hash vector).
-- **`index_channel(...)`**: Orchestrates video discovery, transcript extraction, chunking, title prefixing, embedding, and idempotent `.upsert()` into `ChromaDB`.
-- **`query_channel(...)`**: Embeds the user's question, queries `ChromaDB`, applies hybrid lexical reranking, and generates a grounded answer with `gpt-4o-mini` (or `_synthesize_extractive_answer()` in Free Local Mode).
 
-### 2. [`app.py`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/app.py) — Interactive Streamlit Web App
-- **Any-Channel Input**: Paste any YouTube channel URL or `@handle` (defaults to `https://www.youtube.com/@freecodecamp/videos`).
-- **Auto-Indexing on New Channel**: If you paste a new channel URL and click **🔍 Ask Channel** directly, the app automatically indexes that new channel before answering!
-- **Instant Sample Presets**: 1-click buttons for **freeCodeCamp.org** and **Andrej Karpathy** so you can also test offline in <1 second.
-- **Retrieved Chunk Inspector**: Expandable panel showing the exact top-$k$ transcript chunks, video titles, chunk indices, and vector distances retrieved from `ChromaDB`.
+### 4. [`src/youtube_rag/vector_store.py`](src/youtube_rag/vector_store.py) — Vector Database Layer
+- **`EmbeddedChromaCollection`**: 100% ChromaDB-API-compatible vector store (`.add()`, `.upsert()`, `.query()`, `.count()`, `.get()`, `.delete()`) computing squared-L2 distances with `/tmp` persistence.
 
-### 3. [`tests/test_rag.py`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/tests/test_rag.py) — Automated Test Suite
-- Tests 500-word / 50-word overlap chunking invariants.
-- Tests URL normalization for `@freecodecamp`, `freecodecamp`, and full channel URLs.
-- Tests that placeholder keys (`"sk-..."`, `"sk-...."`) and revoked keys (`401`) never crash the app.
-- Tests end-to-end indexing and querying for `freeCodeCamp` and custom channels.
+### 5. [`src/youtube_rag/indexer.py`](src/youtube_rag/indexer.py) — Channel Indexing Pipeline
+- **`index_channel(...)` & `index_sample_channel(...)`**: Orchestrates video discovery, transcript extraction, chunking, title prefixing, embedding, and batched `.upsert()` into the vector collection.
+
+### 6. [`src/youtube_rag/retriever.py`](src/youtube_rag/retriever.py) — Hybrid Retrieval & Reranking
+- **`_score_and_rerank_candidates(...)` & `retrieve_top_chunks(...)`**: Combines dense vector distance with stemmed keyword overlap and triggers on-demand channel search if topic coverage in recent uploads is `< 65%`.
+
+### 7. [`src/youtube_rag/generator.py`](src/youtube_rag/generator.py) — Grounded Answer Synthesis
+- **`query_channel(...)` & `_synthesize_extractive_answer(...)`**: Synthesizes grounded answers with video citations using `gpt-4o-mini` (or the local extractive synthesizer in Free Local Mode).
+
+### 8. [`app.py`](app.py) & [`channel_rag.py`](channel_rag.py) — Streamlit Web UI & CLI Entrypoint
+- **`app.py`**: 2-tab Streamlit Web UI with Any-Channel Q&A, live per-query `LLM-Judge × NLI` verification, and the 7-query `rag-eval-harness` benchmark dashboard.
+- **`channel_rag.py`**: CLI entrypoint and backwards-compatible facade re-exporting `src/youtube_rag/`.
 
 ---
 

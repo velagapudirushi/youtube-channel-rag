@@ -61,23 +61,25 @@ youtube-channel-rag/
 ├── docs/assets/
 │   ├── architecture_pipeline.jpg          # System architecture diagram of the YouTube RAG + Eval Harness pipeline
 │   └── eval_benchmark.svg                 # Vector chart of benchmark metrics (Recall@5, MRR, NDCG@5, Faithfulness)
-├── src/rag_harness/                       # Bundled Standalone RAG Evaluation Harness (`RAGEvaluator`, Dual-Judge NLI/LLM)
-│   ├── __init__.py
-│   ├── adapters.py
-│   ├── evaluator.py
-│   ├── schemas.py
-│   ├── metrics/
-│   │   ├── claims.py
-│   │   ├── ensemble.py
-│   │   ├── llm_judge.py
-│   │   ├── nli_judge.py
-│   │   └── retrieval.py
-│   ├── reporting/
-│   │   ├── html_dashboard.py
-│   │   ├── markdown.py
-│   │   └── terminal.py
-│   └── triage/
-│       └── classifier.py
+├── src/
+│   ├── youtube_rag/                       # Modular YouTube Channel RAG Package (Separated by Responsibility)
+│   │   ├── __init__.py                    # Public package exports
+│   │   ├── youtube_api.py                 # YouTube API / `yt-dlp` video discovery, channel search & 3-tier transcript extraction
+│   │   ├── chunking.py                    # 500-word sliding window chunking (50-word overlap), stopword filter & plural stemmer
+│   │   ├── embeddings.py                  # OpenAI `text-embedding-3-small` API calls & 384-d local stemmed n-gram fallback
+│   │   ├── vector_store.py                # `EmbeddedChromaCollection` vector DB (L2 distance, metadata filtering, `/tmp` store)
+│   │   ├── indexer.py                     # Channel & sample dataset indexing pipeline (`index_channel`, `index_sample_channel`)
+│   │   ├── retriever.py                   # Hybrid dense + lexical candidate reranker & on-demand channel search
+│   │   ├── generator.py                   # Grounded answer synthesis (`gpt-4o-mini` + local extractive fallback & `query_channel`)
+│   │   └── sample_data.py                 # Curated evergreen datasets for `freeCodeCamp.org` and `Andrej Karpathy`
+│   └── rag_harness/                       # Bundled Standalone RAG Evaluation Harness (`RAGEvaluator`, Dual-Judge NLI/LLM)
+│       ├── __init__.py
+│       ├── adapters.py
+│       ├── evaluator.py
+│       ├── schemas.py
+│       ├── metrics/
+│       ├── reporting/
+│       └── triage/
 └── tests/
     └── test_rag.py                        # 7 unit & integration tests (chunking, URL normalization, 401 safety, freeCodeCamp & Eval Harness)
 ```

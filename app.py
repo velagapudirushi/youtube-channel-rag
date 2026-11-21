@@ -19,17 +19,13 @@ for p in (PROJECT_DIR, LOCAL_SRC_DIR, SIBLING_HARNESS_SRC_DIR):
     if p.exists() and str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from channel_rag import (
-    SAMPLE_CHANNELS,
-    _normalize_channel_url,
-    clear_collection,
-    collection,
-    extract_content_keywords,
-    index_channel,
-    index_sample_channel,
-    is_valid_openai_key,
-    query_channel,
-)
+from youtube_rag.chunking import extract_content_keywords
+from youtube_rag.embeddings import is_valid_openai_key
+from youtube_rag.generator import query_channel
+from youtube_rag.indexer import index_channel, index_sample_channel
+from youtube_rag.sample_data import SAMPLE_CHANNELS
+from youtube_rag.vector_store import clear_collection, collection
+from youtube_rag.youtube_api import _normalize_channel_url
 from evaluate_with_harness import run_youtube_rag_evaluation
 from rag_harness.adapters import _coerce_chunks
 from rag_harness.evaluator import RAGEvaluator
