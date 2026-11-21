@@ -61,9 +61,9 @@ with st.sidebar:
         )
 
     if active_api_key:
-        st.success("🟢 Mode: **OpenAI** (`text-embedding-3-small` + `gpt-4o-mini`)")
+        st.success("🟢 Mode: **LangChain + OpenAI** (`text-embedding-3-small` + `BM25 RRF` + `gpt-4o-mini` LCEL)")
     else:
-        st.info("🔵 Mode: **Free Local Mode** (384-d Stemmed Embeddings + Hybrid Reranking)")
+        st.info("🔵 Mode: **LangChain Hybrid Local Mode** (`BM25Okapi` + `384-d Chroma` via Reciprocal Rank Fusion)")
 
     st.divider()
     st.subheader("Indexing & Retrieval Settings")
@@ -117,10 +117,10 @@ with st.sidebar:
         st.rerun()
 
 # --- Main Header ---
-st.title("🎥 YouTube Channel RAG")
+st.title("🎥 YouTube Channel RAG — LangChain Hybrid Search")
 st.caption(
-    "Paste **any** YouTube channel URL (`@freecodecamp`, `@AndrejKarpathy`, `@fireship`, `@3blue1brown`, playlists, or video URLs), "
-    "ask questions across the channel, and verify every answer with your **RAG Eval Harness (`LLM-as-a-Judge` × `NLI Entailment`)**."
+    "Powered by **LangChain (`RecursiveCharacterTextSplitter` + `BM25Okapi` + `ChromaDB` Reciprocal Rank Fusion + `LCEL`)** • "
+    "Paste **any** YouTube channel URL (`@freecodecamp`, `@AndrejKarpathy`, `@fireship`, `@3blue1brown`) and verify every answer with **`LLM-as-a-Judge` × `NLI Entailment`**."
 )
 
 tab_rag, tab_eval = st.tabs(["🎥 Channel RAG Search & Q&A", "📊 RAG Eval Harness Benchmark Suite"])
@@ -331,13 +331,15 @@ with tab_rag:
                     f"| **Calibrated Score:** `{fc.calibrated_score:.2f}` | {badge}"
                 )
 
-        with st.expander(f"🔎 Retrieved Transcript Chunks (Top {len(result.get('chunks', []))} from ChromaDB)", expanded=True):
+        with st.expander(f"🔎 Retrieved Transcript Chunks (Top-{len(result.get('chunks', []))} via LangChain BM25 + ChromaDB RRF)", expanded=True):
             for chunk_info in result.get("chunks", []):
-                dist_str = f" | Distance: `{chunk_info['distance']:.4f}`" if chunk_info.get("distance") is not None else ""
+                dist_str = f" | Dense Dist: `{chunk_info['distance']:.4f}`" if chunk_info.get("distance") is not None else ""
+                rrf_str = f" | RRF: `{chunk_info['rrf_score']:.4f}`" if chunk_info.get("rrf_score") is not None else ""
+                bm25_str = f" | BM25: `{chunk_info['bm25_score']:.2f}`" if chunk_info.get("bm25_score") is not None else ""
                 channel_badge = f"[{chunk_info['channel']}] " if chunk_info.get("channel") else ""
                 st.markdown(
                     f"**Rank #{chunk_info['rank']} — {channel_badge}[{chunk_info['title']}]({chunk_info['url']})** "
-                    f"(Chunk `{chunk_info['chunk_id']}`{dist_str})"
+                    f"(Chunk `{chunk_info['chunk_id']}`{rrf_str}{bm25_str}{dist_str})"
                 )
                 st.info(chunk_info["text"])
 
