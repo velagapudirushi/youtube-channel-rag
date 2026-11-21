@@ -1,15 +1,15 @@
 """
-Channel Indexing Module (`indexer.py`).
-Orchestrates Step 3: video discovery, transcript extraction, 500-word overlapping chunking,
-contextual title prefixing, embedding computation, and batched upserts into the vector store.
+LangChain Channel Indexing Module (`indexer.py`).
+Splits YouTube video transcripts into LangChain `Document` chunks using `RecursiveCharacterTextSplitter`,
+embeds them with `YouTubeRAGEmbeddings`, and upserts them into ChromaDB.
 """
 
 from __future__ import annotations
 
 from typing import Any, Callable, Optional
 
-from youtube_rag.chunking import chunk_text
-from youtube_rag.embeddings import get_embedding
+from youtube_rag.chunking import split_transcript_to_documents
+from youtube_rag.embeddings import YouTubeRAGEmbeddings, get_embedding
 from youtube_rag.sample_data import SAMPLE_CHANNELS, SAMPLE_KARPATHY_VIDEOS
 from youtube_rag.vector_store import clear_collection, collection
 from youtube_rag.youtube_api import (
@@ -29,7 +29,11 @@ def _index_video_list(
     progress_callback: Optional[Callable[[int, int, str, str], None]] = None,
     transcript_fn: Callable[[str], Optional[str]] = get_transcript,
 ) -> tuple[int, int, int, list[dict[str, Any]]]:
-    """Helper to transcribe, chunk, embed, and batch-upsert a list of video dicts into ChromaDB."""
+    """
+    Split video transcripts into LangChain `Document` objects via `RecursiveCharacterTextSplitter`,
+    embed with `YouTubeRAGEmbeddings`, and batch-upsert into ChromaDB.
+    """
+    lc_embedder = YouTubeRAGEmbeddings(api_key=effective_key)
     indexed = 0
     total_chunks = 0
     skipped = 0
@@ -49,33 +53,36 @@ def _index_video_list(
             skipped += 1
             continue
 
-        chunks = chunk_text(transcript, chunk_size=chunk_size)[:40]
-        if not chunks:
+        # Split transcript into LangChain Document chunks using RecursiveCharacterTextSplitter
+        lc_docs = split_transcript_to_documents(
+            transcript=transcript,
+            metadata={
+                "video_id": video_id,
+                "title": video_title,
+                "channel": channel_name,
+                "embed_mode": embed_mode,
+                "channel_url": channel_url,
+                "url": f"https://youtube.com/watch?v={video_id}",
+            },
+            chunk_size_words=chunk_size,
+            overlap_words=min(50, max(10, chunk_size // 8)),
+        )[:40]
+
+        if not lc_docs:
             skipped += 1
             continue
 
-        batch_docs = []
-        batch_embs = []
-        batch_ids = []
+        batch_docs = [
+            f"<<<Channel: {channel_name} | Video Title: {video_title}>>> {d.page_content}"
+            for d in lc_docs
+        ]
+        batch_embs = lc_embedder.embed_documents(batch_docs)
+        batch_ids = [f"{video_id}_{embed_mode}_chunk_{i}" for i in range(len(lc_docs))]
         batch_metas = []
-
-        for i, chunk in enumerate(chunks):
-            enriched_chunk = f"<<<Channel: {channel_name} | Video Title: {video_title}>>> {chunk}"
-            embedding = get_embedding(enriched_chunk, api_key=effective_key)
-            batch_docs.append(enriched_chunk)
-            batch_embs.append(embedding)
-            batch_ids.append(f"{video_id}_{embed_mode}_chunk_{i}")
-            batch_metas.append(
-                {
-                    "video_id": video_id,
-                    "title": video_title,
-                    "channel": channel_name,
-                    "chunk_index": i,
-                    "embed_mode": embed_mode,
-                    "channel_url": channel_url,
-                    "url": f"https://youtube.com/watch?v={video_id}",
-                }
-            )
+        for i, d in enumerate(lc_docs):
+            m = dict(d.metadata)
+            m["chunk_index"] = i
+            batch_metas.append(m)
 
         active_collection.upsert(
             documents=batch_docs,
@@ -92,7 +99,7 @@ def _index_video_list(
                 "title": video_title,
                 "channel": channel_name,
                 "url": f"https://youtube.com/watch?v={video_id}",
-                "chunks": len(chunks),
+                "chunks": len(lc_docs),
                 "words": len(transcript.split()),
             }
         )
@@ -112,7 +119,7 @@ def index_channel(
     videos_fn: Callable[[str, int], list[dict[str, str]]] = get_channel_videos,
     transcript_fn: Callable[[str], Optional[str]] = get_transcript,
 ) -> dict[str, Any]:
-    """Fetch, transcribe, embed, and store channel videos for ANY YouTube channel."""
+    """Fetch, transcribe, split with LangChain RecursiveCharacterTextSplitter, embed, and store channel videos."""
     active_collection = target_collection if target_collection is not None else collection
 
     if replace_existing:
@@ -185,7 +192,7 @@ def index_sample_channel(
     chunk_size: int = 140,
     replace_existing: bool = True,
 ) -> dict[str, Any]:
-    """Index a built-in channel dataset (freeCodeCamp or Andrej Karpathy) for instant zero-wait demonstration."""
+    """Index a built-in channel dataset into ChromaDB using LangChain RecursiveCharacterTextSplitter."""
     active_collection = target_collection if target_collection is not None else collection
     if replace_existing:
         clear_collection(active_collection)

@@ -1,14 +1,17 @@
 """
-Text Chunking, Stopword Filtering, and Plural Stemming Module (`chunking.py`).
-Splits raw YouTube transcripts into 500-word sliding windows with a 50-word overlap
-and extracts meaningful content keywords for embedding and hybrid reranking.
+LangChain Text Splitting & Tokenization Module (`chunking.py`).
+Uses `RecursiveCharacterTextSplitter` from `langchain_text_splitters` and
+`Document` from `langchain_core.documents` to split YouTube video transcripts.
 """
 
 from __future__ import annotations
 
 import re
+from typing import Any, Optional
 
-# Stopwords and spoken transcript filler words excluded from local embeddings & keyword reranking
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 STOPWORDS = {
     "a", "about", "an", "and", "are", "as", "at", "be", "been", "being", "but", "by",
     "can", "chanel", "channel", "channels", "channle", "could", "course", "courses",
@@ -31,7 +34,7 @@ STOPWORDS = {
 
 
 def _stem_token(word: str) -> str:
-    """Lightweight plural/suffix normalizer so 'lists'=='list', 'tuples'=='tuple', 'transformers'=='transformer'."""
+    """Lightweight plural/suffix normalizer for BM25 tokenization."""
     w = word.lower()
     if len(w) <= 3:
         return w
@@ -47,7 +50,7 @@ def _stem_token(word: str) -> str:
 
 
 def extract_content_keywords(text: str) -> list[str]:
-    """Extract meaningful non-stopword stemmed tokens from a question or document."""
+    """Tokenize and stem text for BM25 sparse retrieval and dense embedding fallback."""
     raw_tokens = re.findall(r"[a-z0-9]+", text.lower())
     result = []
     for tok in raw_tokens:
@@ -57,6 +60,30 @@ def extract_content_keywords(text: str) -> list[str]:
         if stemmed not in STOPWORDS and len(stemmed) >= 2:
             result.append(stemmed)
     return result
+
+
+def split_transcript_to_documents(
+    transcript: str,
+    metadata: Optional[dict[str, Any]] = None,
+    chunk_size_words: int = 500,
+    overlap_words: int = 50,
+) -> list[Document]:
+    """
+    Split a video transcript into LangChain `Document` objects using `RecursiveCharacterTextSplitter`
+    measured by word count (`length_function=lambda s: len(s.split())`).
+    """
+    if not transcript or not transcript.strip():
+        return []
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size_words,
+        chunk_overlap=overlap_words,
+        length_function=lambda s: len(s.split()),
+        separators=["\n\n", "\n", " ", ""],
+        keep_separator="end",
+    )
+    base_doc = Document(page_content=transcript.strip(), metadata=dict(metadata or {}))
+    return splitter.split_documents([base_doc])
 
 
 def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> list[str]:

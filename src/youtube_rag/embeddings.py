@@ -1,7 +1,8 @@
 """
-Embeddings Module (`embeddings.py`).
-Handles OpenAI `text-embedding-3-small` API calls, API key validation (preventing 401 crashes
-on placeholder keys like 'sk-...'), and deterministic 384-d local stemmed n-gram fallback embeddings.
+LangChain Embeddings Module (`embeddings.py`).
+Implements `YouTubeRAGEmbeddings(Embeddings)` subclassing `langchain_core.embeddings.Embeddings`.
+Uses OpenAI `text-embedding-3-small` when a valid API key is present, and automatically falls back
+to a 384-d stemmed n-gram embedding so queries never crash with 401 errors.
 """
 
 from __future__ import annotations
@@ -12,6 +13,7 @@ import os
 import re
 from typing import Optional
 
+from langchain_core.embeddings import Embeddings
 from openai import OpenAI
 
 from youtube_rag.chunking import extract_content_keywords
@@ -45,8 +47,6 @@ def _get_openai_client(api_key: Optional[str] = None) -> Optional[OpenAI]:
 def _local_deterministic_embedding(text: str, dim: int = 384) -> list[float]:
     """
     Stopword-filtered, stemmed local word + bigram hashing embedding (384-d unit vector).
-    By removing spoken filler words ("uh", "um", "what", "this") and normalizing plurals
-    ("lists" -> "list", "tuples" -> "tuple"), cosine similarity focuses strictly on technical content.
     """
     vec = [0.0] * dim
     tokens = extract_content_keywords(text)
@@ -87,3 +87,19 @@ def get_embedding(text: str, api_key: Optional[str] = None) -> list[float]:
         except Exception as exc:
             print(f"⚠️ OpenAI embedding call failed ({exc}); falling back to local 384-d embedding.")
     return _local_deterministic_embedding(text)
+
+
+class YouTubeRAGEmbeddings(Embeddings):
+    """
+    LangChain `Embeddings` implementation (`embed_documents` & `embed_query`)
+    wrapping OpenAI `text-embedding-3-small` with automatic 384-d local fallback.
+    """
+
+    def __init__(self, api_key: Optional[str] = None) -> None:
+        self.api_key = api_key
+
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        return [get_embedding(t, api_key=self.api_key) for t in texts]
+
+    def embed_query(self, text: str) -> list[float]:
+        return get_embedding(text, api_key=self.api_key)

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "youtube-channel-rag"
-version = "1.0.0"
-description = "Turn any YouTube channel into a searchable RAG knowledge base with ChromaDB, Hybrid Reranking, and Dual-Judge Evaluation."
+version = "2.0.0"
+description = "Turn any YouTube channel into a searchable RAG knowledge base with LangChain, ChromaDB, Hybrid BM25+Vector Search (RRF), and Dual-Judge Evaluation."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -16,6 +16,9 @@ dependencies = [
     "youtube-transcript-api>=0.6.2",
     "yt-dlp>=2024.8.6",
     "openai>=1.40.0",
+    "langchain-core>=0.3.0",
+    "langchain-text-splitters>=0.3.0",
+    "rank-bm25>=0.2.2",
     "streamlit>=1.35.0",
     "numpy>=1.24.0",
     "pydantic>=2.0.0",

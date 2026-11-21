@@ -1,7 +1,8 @@
 """
-Answer Generation & Query Orchestration Module (`generator.py`).
-Handles Step 4: synthesizing grounded answers from retrieved transcript chunks
-using OpenAI `gpt-4o-mini` (or the Local Extractive Synthesizer fallback).
+LangChain LCEL Answer Generation & Query Orchestration Module (`generator.py`).
+Uses LangChain Expression Language (LCEL):
+    `ChatPromptTemplate.from_template(...) | RunnableLambda(...) | StrOutputParser()`
+to synthesize grounded answers strictly from the Top-K retrieved LangChain `Document` chunks.
 """
 
 from __future__ import annotations
@@ -9,15 +10,30 @@ from __future__ import annotations
 import re
 from typing import Any, Optional
 
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda
+
 from youtube_rag.chunking import _strip_chunk_header, extract_content_keywords
 from youtube_rag.embeddings import _get_openai_client
 from youtube_rag.retriever import retrieve_top_chunks
 from youtube_rag.vector_store import collection
 
+RAG_PROMPT_TEMPLATE = ChatPromptTemplate.from_template(
+    """Answer the question using ONLY the YouTube transcript context below.
+Include which video(s) the information came from.
+
+Context:
+{context}
+
+Question: {question}
+Answer:"""
+)
+
 
 def _synthesize_extractive_answer(question: str, docs: list[str], metadatas: list[dict[str, Any]]) -> str:
     """
-    Generate a clean, well-structured grounded answer directly from the retrieved transcript chunks
+    Generate a clean, well-structured grounded answer directly from the Top-K retrieved transcript chunks
     when running without an OpenAI API key (or if the OpenAI API key fails).
     """
     if not docs:
@@ -81,7 +97,8 @@ def query_channel(
     model: str = "gpt-4o-mini",
 ) -> dict[str, Any]:
     """
-    Search across all indexed videos and generate a grounded answer with video citations.
+    Retrieve ONLY the Top-K chunks via LangChain Hybrid Search (BM25 + ChromaDB RRF)
+    and synthesize a grounded answer via a LangChain LCEL chain (`RAG_PROMPT_TEMPLATE | llm | StrOutputParser()`).
     """
     active_collection = target_collection if target_collection is not None else collection
 
@@ -117,29 +134,26 @@ def query_channel(
     context = "\n\n".join(context_blocks)
     sources = list(dict.fromkeys(m["url"] for m in metadatas if "url" in m))
 
-    prompt = f"""Answer the question using ONLY the YouTube transcript context below.
-Include which video(s) the information came from.
-
-Context:
-{context}
-
-Question: {question}
-Answer:"""
-
     client = _get_openai_client(api_key) if embed_mode == "openai" else None
-    answer = None
-    if client is not None:
-        try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-            )
-            answer = response.choices[0].message.content
-        except Exception as exc:
-            print(f"⚠️ OpenAI chat completion failed ({exc}); falling back to local synthesis.")
 
-    if not answer:
-        answer = _synthesize_extractive_answer(question, docs, metadatas)
+    def _invoke_llm_or_fallback(prompt_value: Any) -> str:
+        prompt_text = prompt_value.to_string() if hasattr(prompt_value, "to_string") else str(prompt_value)
+        if client is not None:
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt_text}],
+                )
+                content = response.choices[0].message.content
+                if content:
+                    return content
+            except Exception as exc:
+                print(f"⚠️ OpenAI chat completion failed ({exc}); falling back to local synthesis.")
+        return _synthesize_extractive_answer(question, docs, metadatas)
+
+    # LangChain Expression Language (LCEL) Chain: PromptTemplate | LLM Callable | StrOutputParser
+    lcel_chain = RAG_PROMPT_TEMPLATE | RunnableLambda(_invoke_llm_or_fallback) | StrOutputParser()
+    answer = lcel_chain.invoke({"context": context, "question": question})
 
     retrieved_chunks = []
     for idx, (doc, meta) in enumerate(zip(docs, metadatas)):
@@ -152,6 +166,8 @@ Answer:"""
                 "chunk_id": f"{vid}_chunk_{c_idx}",
                 "rank": idx + 1,
                 "score": sim_score,
+                "rrf_score": meta.get("rrf_score"),
+                "bm25_score": meta.get("bm25_score"),
                 "video_id": vid,
                 "title": meta.get("title", vid),
                 "channel": meta.get("channel", ""),
