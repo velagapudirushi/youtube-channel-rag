@@ -26,8 +26,8 @@
   <!-- Cross-Checked Faithfulness -->
   <text x="40" y="205" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Cross-Checked Faithfulness</text>
   <rect x="240" y="188" width="560" height="24" rx="6" fill="#1e293b"/>
-  <rect x="240" y="188" width="548.8" height="24" rx="6" fill="#8b5cf6"/>
-  <text x="815" y="205" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="13" font-weight="700">98.0%</text>
+  <rect x="240" y="188" width="554.4" height="24" rx="6" fill="#8b5cf6"/>
+  <text x="815" y="205" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="13" font-weight="700">99.0%</text>
 
   <!-- Answer Completeness -->
   <text x="40" y="245" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Answer Completeness</text>
