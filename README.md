@@ -86,7 +86,7 @@ Once we have each video's 11-character `video_id`, we need the spoken words from
 
 ### 3. Chunking Strategy: Why 500-Word Sliding Window with 50-Word Overlap vs. Alternatives
 
-In [`chunk_text()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py#L316-L325), we split each transcript into **500-word chunks** with a **50-word overlap** (`step = 450` words), and prepend `[Channel: ... | Video Title: ...]`.
+In [`chunk_text()`](src/youtube_rag/chunking.py), we split each transcript into **500-word chunks** with a **50-word overlap** (`step = 450` words), and prepend `[Channel: ... | Video Title: ...]`.
 
 ```python
 for i in range(0, len(words), chunk_size - 50):  # 50-word overlap
@@ -137,7 +137,7 @@ for i in range(0, len(words), chunk_size - 50):  # 50-word overlap
 ### 6. Retrieval Strategy: Why Hybrid Vector + Lexical Reranking + Title Prefixing
 
 Pure vector similarity (dense retrieval) sometimes misses exact technical terms (e.g., function names, acronyms like `BPE`, `RLHF`, `SVM`, `KNN`, or course titles).
-In [`query_channel()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py#L469-L579):
+In [`query_channel()`](src/youtube_rag/generator.py):
 1. We first query `ChromaDB` for `candidate_k = max(n_results * 3, 10)` nearest neighbors in embedding space.
 2. We then apply **Hybrid Lexical Reranking**:
    $$\text{CombinedScore} = \text{VectorDistance} - 0.08 \times |\text{QueryTerms} \cap \text{ChunkTerms}|$$
@@ -204,9 +204,10 @@ The codebase is modularized by responsibility inside `src/youtube_rag/`:
 
 ## 🚀 Quickstart & Usage
 
-### 1. Install Dependencies
+### 1. Clone & Install Dependencies
 ```bash
-cd /Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag
+git clone https://github.com/velagapudirushi/youtube-channel-rag.git
+cd youtube-channel-rag
 pip install -r requirements.txt
 ```
 
@@ -237,4 +238,4 @@ pytest tests/test_rag.py -v
 
 ### Why did `openai.AuthenticationError: Error code: 401 - Incorrect API key provided: sk-....` happen previously?
 If you ran `export OPENAI_API_KEY="sk-..."` in your terminal using the literal placeholder text `"sk-..."`, the OpenAI SDK sent `"sk-..."` to OpenAI's servers, which rejected it with HTTP `401`.
-- **How it is fixed now:** [`is_valid_openai_key()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py#L149-L162) automatically detects and ignores placeholder keys (`sk-...`, `sk-....`, keys `< 30` chars), and both [`get_embedding()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py#L328-L343) and [`query_channel()`](file:///Users/velagapudirushi/.gemini/antigravity/scratch/youtube-channel-rag/channel_rag.py#L469-L579) wrap OpenAI calls in `try/except` blocks that seamlessly fall back to **Free Local Mode** if an API key is invalid or out of quota.
+- **How it is fixed now:** [`is_valid_openai_key()`](src/youtube_rag/embeddings.py) automatically detects and ignores placeholder keys (`sk-...`, `sk-....`, keys `< 30` chars), and both [`get_embedding()`](src/youtube_rag/embeddings.py) and [`query_channel()`](src/youtube_rag/generator.py) wrap OpenAI calls in `try/except` blocks that seamlessly fall back to **Free Local Mode** if an API key is invalid or out of quota.
